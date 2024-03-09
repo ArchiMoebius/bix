@@ -191,9 +191,6 @@ class ReaderBase(SQLModel):
     )
     age: int = 0
 
-    def __init__(self):
-        self.calculate_age()
-
     def calculate_age(self):
         today = date.today()
 
