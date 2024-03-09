@@ -38,53 +38,57 @@ def cli():
 
     @app.get("/books.html")
     async def _(request: Request, response_class=HTMLResponse):
-        return templates.TemplateResponse("pages/books.html", {"request": request})
+        return templates.TemplateResponse("/pages/books.html", {"request": request})
 
     @app.get("/readers.html")
     async def _(request: Request, response_class=HTMLResponse):
-        return templates.TemplateResponse("pages/readers.html", {"request": request})
+        return templates.TemplateResponse("/pages/readers.html", {"request": request})
 
     @app.get("/categories.html")
     async def _(request: Request, response_class=HTMLResponse):
-        return templates.TemplateResponse("pages/categories.html", {"request": request})
+        return templates.TemplateResponse(
+            "/pages/categories.html", {"request": request}
+        )
 
     @app.get("/add_book.html")
     async def _(request: Request, response_class=HTMLResponse):
-        return templates.TemplateResponse("pages/add_book.html", {"request": request})
+        return templates.TemplateResponse("/pages/add_book.html", {"request": request})
 
     @app.get("/add_reader.html")
     async def _(request: Request, response_class=HTMLResponse):
-        return templates.TemplateResponse("pages/add_reader.html", {"request": request})
+        return templates.TemplateResponse(
+            "/pages/add_reader.html", {"request": request}
+        )
 
     @app.get("/add_category.html")
     async def _(request: Request, response_class=HTMLResponse):
         return templates.TemplateResponse(
-            "pages/add_category.html", {"request": request}
+            "/pages/add_category.html", {"request": request}
         )
 
     @app.get("/reader_books.html")
     async def _(request: Request, response_class=HTMLResponse):
         return templates.TemplateResponse(
-            "pages/reader_books.html", {"request": request}
+            "/pages/reader_books.html", {"request": request}
         )
 
     @app.get("/category_books.html")
     async def _(request: Request, response_class=HTMLResponse):
         return templates.TemplateResponse(
-            "pages/category_books.html", {"request": request}
+            "/pages/category_books.html", {"request": request}
         )
 
     @app.get("/reader.html")
     async def _(request: Request, response_class=HTMLResponse):
-        return templates.TemplateResponse("pages/reader.html", {"request": request})
+        return templates.TemplateResponse("/pages/reader.html", {"request": request})
 
     @app.get("/book.html")
     async def _(request: Request, response_class=HTMLResponse):
-        return templates.TemplateResponse("pages/book.html", {"request": request})
+        return templates.TemplateResponse("/pages/book.html", {"request": request})
 
     @app.get("/category.html")
     async def _(request: Request, response_class=HTMLResponse):
-        return templates.TemplateResponse("pages/category.html", {"request": request})
+        return templates.TemplateResponse("/pages/category.html", {"request": request})
 
     app.mount(
         "/",
