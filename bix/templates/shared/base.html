@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-    <link href="/css/site.css" rel="stylesheet">
-    <link href="/css/mermaid.min.css" rel="stylesheet">
-    <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#464246">
+    <link href="css/site.css" rel="stylesheet">
+    <link href="css/mermaid.min.css" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="mask-icon" href="img/safari-pinned-tab.svg" color="#464246">
     <meta name="apple-mobile-web-app-title" content="Bix">
     <meta name="application-name" content="Bix">
     <meta name="msapplication-TileColor" content="#464246">
@@ -24,7 +24,7 @@
 
 <body>
     <!-- Side navigation -->
-    {% include "/parts/navbar.html" %}
+    {% include "parts/navbar.html" %}
 
     <!-- Page content -->
     <div class="main" id="main-content">
@@ -40,8 +40,7 @@
         var children = Array.from(document.getElementById("sidenav").children);
         hrefbase = location.href.split("?")[0];
         children.forEach((child) => {
-
-            if (child.href.startsWith(hrefbase)) {
+            if (child.hasAttribute("href") && child.href.startsWith(hrefbase)) {
                 child.classList.add("active-nav");
             }
         });
