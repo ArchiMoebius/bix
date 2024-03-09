@@ -1,0 +1,65 @@
+{% extends "shared/base.html" %}
+
+{% block title %}
+<title>Reader</title>
+{% endblock %}
+
+{% block content %}
+<h1>Books Read By: <span id="reader-name"></span></h1>
+{% endblock %}
+
+{% block page_script %}
+
+<script src="/js/gridjs.umd.js"></script>
+<script type="text/javascript">
+  const url = new URL(window.location.href);
+  const reader_id = url.searchParams.get("id");
+
+  if (reader_id === null) {
+    document.getElementById("main-content").innerHTML = 'To view details on a reader, <a href="/readers.html">first select one</a>';
+  } else {
+
+
+    fetch(`/reader/${reader_id}`, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        document.getElementById("reader-name").innerHTML = json.name;
+      });
+
+    const grid = new gridjs.Grid({
+      columns: [
+        {
+          name: 'ID',
+          hidden: true
+        },
+        'Title',
+        'Read (Self / Aloud)',
+        'Date',
+      ],
+      search: false,
+      sort: true,
+      pagination: {
+        limit: 100,
+        server: {
+          url: (prev, page, limit) => `${prev}?limit=${limit}&offset=${page * limit}`
+        }
+      },
+      server: {
+        url: `/reader/${reader_id}/books`,
+        then: data => data.results.map(entry => [
+          entry.id,
+          gridjs.html(`<div class="box"><img src="${entry.book_image}" width="52" height="80"/><span><a href='/book.html?id=${entry.book_id}'>${entry.book_title}</a></span></div>`),
+          gridjs.html(`<div class="read">${entry.read_self} / ${entry.read_aloud}</div>`),
+          entry.read_date,
+        ]),
+        total: data => data.count
+      }
+    });
+
+    grid.render(document.getElementById("wrapper"));
+  }
+</script>
+
+{% endblock %}

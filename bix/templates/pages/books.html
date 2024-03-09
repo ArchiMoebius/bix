@@ -1,0 +1,114 @@
+{% extends "shared/base.html" %}
+
+{% block title %}
+<title>Books</title>
+{% endblock %}
+
+{% block page_script %}
+
+<script src="/js/gridjs.umd.js"></script>
+<script type="text/javascript">
+  const baseURL = document.location.origin;
+  const grid = new gridjs.Grid({
+    columns: [
+      'Book',
+      'Author',
+      'ISBN', {
+        name: 'ID',
+        hidden: true
+      },
+      {
+        name: 'Title',
+        hidden: true
+      },
+      {
+        name: 'Actions',
+        formatter: (cell, row) => {
+          return gridjs.h('button', {
+            className: 'action-button',
+            onClick: (e) => {
+              if (confirm(`Delete "${row.cells[4].data}"?`)) {
+                fetch(`/book/${row.cells[3].data}`, {
+                  method: "DELETE",
+                })
+                  .then((response) => response.json())
+                  .then((json) => {
+                    if (json["ok"]) {
+                      e.target.parentElement.parentElement.remove();
+                      return;
+                    }
+                    alert("Failed to delete book!");
+                  });
+              }
+            }
+          }, 'Delete');
+        }
+      }],
+    pagination: {
+      limit: 100,
+      server: {
+        url: (prev, page, limit) => {
+          var queryURL = new URL('/book/', baseURL);
+
+          queryURL = `${queryURL.pathname}?limit=${limit}&offset=${page * limit}`;
+
+          const queryParams = new URLSearchParams(prev.replaceAll("/book/", ""));
+          var search = queryParams.get("search")
+
+          if (search == null) {
+            search = ""
+          }
+
+          queryURL = `${queryURL}&search=${search}`
+
+          return queryURL;
+        }
+      }
+    },
+    search: {
+      server: {
+        url: (prev, keyword) => {
+          const queryParams = new URLSearchParams(prev.replaceAll("/book/", ""));
+          var queryURL = new URL('/book/', baseURL);
+
+          queryURL = `${queryURL.pathname}`;
+
+          if (keyword.length <= 2) {
+            return queryURL;
+          }
+
+          queryURL = `${queryURL}?search=${keyword}`
+
+          var limit = queryParams.get("limit")
+
+          if (limit !== null) {
+            queryURL = `${queryURL}&limit=${limit}`
+          }
+
+          var offset = queryParams.get("offset")
+
+          if (offset !== null) {
+            queryURL = `${queryURL}&offset=${offset}`
+          }
+
+          return queryURL;
+        }
+      }
+    },
+    server: {
+      url: '/book/',
+      then: data => data.results.map(book => [
+        gridjs.html(`<div class="box"><img src="${book.image}" width="52" height="80"/><span><a href='/book.html?id=${book.id}'>${book.title}</a></span></div>`),
+        gridjs.html(`${book.author}`),
+        gridjs.html(`<a target="_blank" href='https://hub.lexile.com/find-a-book/book-details/${book.isbn10}'>${book.isbn10}</a> | <a target="_blank" href='https://hub.lexile.com/find-a-book/book-details/${book.isbn13}'>${book.isbn13}</a>`),
+        book.id,
+        book.title
+      ]),
+      total: data => data.count
+    }
+  })
+
+  grid.render(document.getElementById("wrapper"));
+</script>
+
+{% endblock %}

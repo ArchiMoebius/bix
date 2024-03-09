@@ -1,0 +1,68 @@
+{% extends "shared/base.html" %}
+
+{% block title %}
+<title>Readers</title>
+{% endblock %}
+
+{% block page_script %}
+
+<script src="/js/gridjs.umd.js"></script>
+<script type="text/javascript">
+  const grid = new gridjs.Grid({
+    columns: [
+      {
+        name: 'NameHiddenPlainText',
+        hidden: true
+      },
+      'Name',
+      'Age', {
+        name: 'ID',
+        hidden: true
+      }, {
+        name: 'Actions',
+        formatter: (cell, row) => {
+          return gridjs.h('button', {
+            className: 'action-button',
+            onClick: (e) => {
+              if (confirm(`Delete "${row.cells[0].data}"?`)) {
+                fetch(`/reader/${row.cells[3].data}`, {
+                  method: "DELETE",
+                })
+                  .then((response) => response.json())
+                  .then((json) => {
+                    if (json["ok"]) {
+                      e.target.parentElement.parentElement.remove();
+                      return;
+                    }
+                    alert("Failed to delete reader!");
+                  });
+              }
+            }
+          }, 'Delete');
+        }
+      }],
+    search: true,
+    sort: true,
+    pagination: {
+      limit: 100,
+      server: {
+        url: (prev, page, limit) => `${prev}?limit=${limit}&offset=${page * limit}`
+      }
+    },
+    server: {
+      url: '/reader/',
+      then: data => data.results.map(reader => [
+        reader.name,
+        gridjs.html(`<a href='/reader.html?id=${reader.id}'>${reader.name}</a>`),
+        reader.age,
+        reader.id,
+        gridjs.html(`<${reader.id}>`),
+      ]),
+      total: data => data.count
+    }
+  })
+
+  grid.render(document.getElementById("wrapper"));
+</script>
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "shared/base.html" %}
+
+{% block title %}
+<title>Add Reader</title>
+{% endblock %}
+
+{% block page_style %}
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  input[type=text],
+  select,
+  textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+  }
+
+  input[type=submit] {
+    background-color: #04AA6D;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+
+  .main {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<form action="/reader/" method="post" id="addReaderForm">
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" placeholder="Readers Name">
+
+  <label for="birthdate">Birthdate</label>
+  <input type="date" id="birthdate" name="birthdate" placeholder="Readers Birthdate">
+
+  <button type="submit">Submit</button>
+</form>
+{% endblock %}
+
+{% block page_script %}
+<script type="text/javascript">
+  const addReaderForm = document.getElementById("addReaderForm");
+
+  addReaderForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    let name = document.getElementById("name");
+    let birthdate = document.getElementById("birthdate");
+
+    if (name.value == "" || birthdate.value == "") {
+      alert("Bad values for either name or birthdate");
+    } else {
+      fetch("/reader", {
+        method: "POST",
+        body: JSON.stringify({
+          name: name.value,
+          birthdate: birthdate.value,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          if (json["id"]) {
+            alert("Reader Added!");
+            addReaderForm.reset();
+            return;
+          }
+          alert("Failed to add reader!");
+        });
+    }
+  });
+</script>
+{% endblock %}

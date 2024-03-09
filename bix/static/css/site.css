@@ -1,0 +1,78 @@
+body {
+    font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+    text-decoration: underline;
+}
+
+.active-nav {
+    color: white !important;
+    border-top: 1px;
+    border-bottom: 1px;
+    border-left: 0px;
+    border-right: 0px;
+    border-color: #aaa;
+    border-style: solid;
+    background-color: #222222;
+}
+
+.action-button {
+    cursor: pointer;
+    padding: 8px !important;
+    margin: 4px !important;
+    font-size: large;
+    font-weight: bold;
+    border: 0px;
+    color: black;
+    background-color: orangered;
+}
+
+.main {
+    margin-left: 200px;
+    /* Same as the width of the sidenav */
+    font-size: 28px;
+    /* Increased text to enable scrolling */
+    padding: 0px 10px;
+}
+
+.box {
+    display: flex;
+    align-items: center;
+}
+
+.box img {
+    margin-right: 20px;
+}
+
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+
+    .sidenav a {
+        font-size: 18px;
+    }
+}

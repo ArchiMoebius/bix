@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="{{ url_for('static', path='css/site.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='css/mermaid.min.css') }}" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', path='img/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', path='img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', path='img/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', path='site.webmanifest') }}">
+    <link rel="mask-icon" href="{{ url_for('static', path='img/safari-pinned-tab.svg') }}" color="#464246">
+    <meta name="apple-mobile-web-app-title" content="Bix">
+    <meta name="application-name" content="Bix">
+    <meta name="msapplication-TileColor" content="#464246">
+    <meta name="theme-color" content="#464246">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% block page_style %}
+    {% endblock %}
+
+    {% block title %}
+    {% endblock %}
+</head>
+
+<body>
+    <!-- Side navigation -->
+    {% include "parts/navbar.html" %}
+
+    <!-- Page content -->
+    <div class="main" id="main-content">
+        {% block content %}
+        {% endblock %}
+        <div id="wrapper"></div>
+    </div>
+
+    {% block page_script %}
+    {% endblock %}
+
+    <script>
+        var children = Array.from(document.getElementById("sidenav").children);
+        hrefbase = location.href.split("?")[0];
+        children.forEach((child) => {
+
+            if (child.href.startsWith(hrefbase)) {
+                child.classList.add("active-nav");
+            }
+        });
+    </script>
+</body>
+
+</html>

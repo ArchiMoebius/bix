@@ -1,0 +1,6 @@
+recursive-include bix *.py
+recursive-include bix *.css
+recursive-include bix *.js
+recursive-include bix *.html
+recursive-include bix *.xml
+recursive-include bix *.webmanifest

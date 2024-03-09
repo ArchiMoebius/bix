@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bix
+    volumes:
+      - "./data:/home/user"
+    restart: unless-stopped
+    network_mode: host
