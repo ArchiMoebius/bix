@@ -4,3 +4,6 @@ recursive-include bix *.js
 recursive-include bix *.html
 recursive-include bix *.xml
 recursive-include bix *.webmanifest
+recursive-include bix *.png
+recursive-include bix *.svg
+recursive-include bix *.ico
